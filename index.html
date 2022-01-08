@@ -9,7 +9,9 @@
         <input placeholder="search patterns... ex. ____ M__K" />
       </div>
       <div id="results"></div>
-
+      <div id="loading">
+        <img src="loading.gif" />
+      </div>
       <a href="https://github.com/Ajaykumbhare/skribbl.io-recommendation" target="_blank"> 👨‍💻 Source code</a>
     </div>
   </body>
@@ -44,11 +46,14 @@
 
   input.addEventListener('keypress', (e) => {
     if (e.keyCode === 13) {
+      document.querySelector('#results').innerHTML = '';
+      document.querySelector('#loading').style.display = 'block';
       if (input.value.trim() !== '') {
         fetch(`.netlify/functions/finder/${input.value}`)
           .then((res) => res.json())
           .then((data) => {
             const { suggestions } = data;
+            document.querySelector('#loading').style.display = 'none';
             document.querySelector('#results').innerHTML = suggestions.reduce(
               (a, b) => `${a}<span style="color:${randomColor()}">${b}</span>`,
               '',
@@ -113,5 +118,8 @@
 
   #results > span:hover {
     font-weight: bold;
+  }
+  #loading img {
+    border-radius: 20px;
   }
 </style>
