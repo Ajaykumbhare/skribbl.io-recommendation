@@ -11,6 +11,7 @@
       <div id="results"></div>
       <div id="loading">
         <span>Loading...</span>
+        <audio><source src="./media/notification.mp3" /></audio>
       </div>
       <a href="https://github.com/Ajaykumbhare/skribbl.io-recommendation" target="_blank"> 👨‍💻 Source code</a>
     </div>
@@ -20,7 +21,6 @@
 <script>
   const input = document.querySelector('input');
   const result = document.querySelector('#results');
-  const notification = new Audio('./media/notification.mp3');
   const copyToClipboard = (str) => {
     const el = document.createElement('textarea');
     el.value = str;
@@ -46,7 +46,7 @@
 
   input.addEventListener('keypress', (e) => {
     if (e.keyCode === 13) {
-      notification.play();
+      document.querySelector('audio').play();
       document.querySelector('#results').innerHTML = '';
       document.querySelector('#loading').style.display = 'block';
       if (input.value.trim() !== '') {
@@ -62,7 +62,10 @@
               );
             }, 600);
           })
-          .catch(() => alert('I am busy now. Can we connect later?'));
+          .catch(() => {
+            document.querySelector('#loading').style.display = 'none';
+            alert('I am busy now. Can we connect later?');
+          });
       }
     }
   });
