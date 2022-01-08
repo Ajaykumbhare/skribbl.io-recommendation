@@ -3,19 +3,106 @@
     <title>skribble.io recommendation</title>
   </head>
   <body>
-    <a href="https://github.com/Ajaykumbhare/skribbl.io-recommendation" target="_blank"> 👨‍💻 Source code</a>
+    <div>
+      <h3>skribbl.io recommendation</h3>
+      <div>
+        <input placeholder="search patterns..." />
+      </div>
+      <div id="results"></div>
+
+      <a href="https://github.com/Ajaykumbhare/skribbl.io-recommendation" target="_blank"> 👨‍💻 Source code</a>
+    </div>
   </body>
 </html>
+
+<script>
+  const input = document.querySelector('input');
+  const result = document.querySelector('#results');
+
+  result.addEventListener('click', (e) => {
+    copyToClipboard(e.target.innerText);
+  });
+
+  const copyToClipboard = (str) => {
+    const el = document.createElement('textarea');
+    el.value = str;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    const selected = document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    if (selected) {
+      document.getSelection().removeAllRanges();
+      document.getSelection().addRange(selected);
+    }
+  };
+
+  input.addEventListener('keypress', (e) => {
+    if (e.keyCode === 13) {
+      if (input.value.trim() !== '') {
+        fetch(`.netlify/functions/finder/${input.value}`)
+          .then((res) => res.json())
+          .then((data) => {
+            const { suggestions } = { data };
+            document.querySelector('#results').innerHTML = suggestions.reduce((a, b) => `${a}<span>${b}</span>`, '');
+          })
+          .catch(() => alert('I am busy now. Can we connect later?'));
+      }
+    }
+  });
+</script>
 
 <style>
   body {
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: cursive;
+  }
+  body > div {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+  }
+  h3 {
+    margin: 0;
+    color: #00ad9f;
+    font-weight: bold;
   }
   a {
     text-decoration: none;
-    color: #ff6600;
+    color: #00ad9f;
     font-weight: bold;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
+
+  input {
+    padding: 10px 15px;
+    width: 300px;
+    margin: 10px;
+  }
+
+  #results {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 20px;
+  }
+
+  #results > span {
+    cursor: pointer;
+  }
+
+  #results > span:hover {
+    font-weight: bold;
+    color: #00ad9f;
   }
 </style>
