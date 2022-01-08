@@ -10,7 +10,7 @@
       </div>
       <div id="results"></div>
       <div id="loading">
-        <img src="loading.gif" />
+        <span>Loading...</span>
       </div>
       <a href="https://github.com/Ajaykumbhare/skribbl.io-recommendation" target="_blank"> 👨‍💻 Source code</a>
     </div>
@@ -20,7 +20,7 @@
 <script>
   const input = document.querySelector('input');
   const result = document.querySelector('#results');
-
+  const notification = new Audio('./media/notification.mp3');
   const copyToClipboard = (str) => {
     const el = document.createElement('textarea');
     el.value = str;
@@ -46,6 +46,7 @@
 
   input.addEventListener('keypress', (e) => {
     if (e.keyCode === 13) {
+      notification.play();
       document.querySelector('#results').innerHTML = '';
       document.querySelector('#loading').style.display = 'block';
       if (input.value.trim() !== '') {
@@ -53,11 +54,13 @@
           .then((res) => res.json())
           .then((data) => {
             const { suggestions } = data;
-            document.querySelector('#loading').style.display = 'none';
-            document.querySelector('#results').innerHTML = suggestions.reduce(
-              (a, b) => `${a}<span style="color:${randomColor()}">${b}</span>`,
-              '',
-            );
+            setTimeout(() => {
+              document.querySelector('#loading').style.display = 'none';
+              document.querySelector('#results').innerHTML = suggestions.reduce(
+                (a, b) => `${a}<span style="color:${randomColor()}">${b}</span>`,
+                '',
+              );
+            }, 600);
           })
           .catch(() => alert('I am busy now. Can we connect later?'));
       }
@@ -119,8 +122,7 @@
   #results > span:hover {
     font-weight: bold;
   }
-  #loading img {
+  #loading {
     display: none;
-    border-radius: 20px;
   }
 </style>
