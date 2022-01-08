@@ -2299,5 +2299,5 @@ const wordsArray = [
     "girl"
 ];
 
-const predicate = (input) => word => new RegExp('^' + input.split('').map(c => c === '_' ? '[a-zA-Z]' : c).join('') + '$').test(word);
+const predicate = (input) => word => new RegExp('^' + input.split('').map(c => c === '_' ? '[a-zA-Z]' : c).join('') + '$', 'gi').test(word);
 export const getSuggetions = (input) => wordsArray.filter((word) => predicate(input)(word));
