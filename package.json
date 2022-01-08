@@ -1,0 +1,24 @@
+{
+  "name": "skribbl.io-recommendation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:lambda": "netlify-lambda serve functions",
+    "build:lambda": "netlify-lambda build functions"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ajaykumbhare/skribbl.io-recommendation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ajaykumbhare/skribbl.io-recommendation/issues"
+  },
+  "homepage": "https://github.com/Ajaykumbhare/skribbl.io-recommendation#readme",
+  "dependencies": {
+    "netlify-lambda": "^2.0.15"
+  }
+}
