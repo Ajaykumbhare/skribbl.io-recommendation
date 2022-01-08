@@ -19,10 +19,6 @@
   const input = document.querySelector('input');
   const result = document.querySelector('#results');
 
-  result.addEventListener('click', (e) => {
-    copyToClipboard(e.target.innerText);
-  });
-
   const copyToClipboard = (str) => {
     const el = document.createElement('textarea');
     el.value = str;
@@ -40,13 +36,17 @@
     }
   };
 
+  result.addEventListener('click', (e) => {
+    copyToClipboard(e.target.innerText);
+  });
+
   input.addEventListener('keypress', (e) => {
     if (e.keyCode === 13) {
       if (input.value.trim() !== '') {
         fetch(`.netlify/functions/finder/${input.value}`)
           .then((res) => res.json())
           .then((data) => {
-            const { suggestions } = { data };
+            const { suggestions } = data;
             document.querySelector('#results').innerHTML = suggestions.reduce((a, b) => `${a}<span>${b}</span>`, '');
           })
           .catch(() => alert('I am busy now. Can we connect later?'));
